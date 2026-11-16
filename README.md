@@ -48,8 +48,10 @@ components/
   ui/                     # 2D overlay UI — nav, overlays, gate, controls hint
 lib/
   world.ts                # Typed mirror of WORLD_BRIEF.md
-  content.ts, projects.ts # CONTENT.md readers
+  content.server.ts       # CONTENT.md parser (build time)
   store.ts                # Mode machine (loading / play / locked / overlay)
+  rig.ts                  # Camera rig: poses, the travel primitive, tour stops
+  storefronts.ts, props.ts # Generated wall layout; authored prop placement
   textures/                # Canvas-painted textures
 shaders/                  # GLSL, as template literals
 ```

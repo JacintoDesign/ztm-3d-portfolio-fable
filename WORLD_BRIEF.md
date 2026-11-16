@@ -443,7 +443,7 @@ The whole assembly — panel, both jambs, lintel — now ends flush on the pier'
 
 **And the plinth was invisible — for four sections, in every screenshot, without anyone noticing.** It is 0.10 high and it sat at `y ∈ [0, 0.10]`; §3's kerb is 0.12 high and runs under the whole wall. **The plinth was entirely inside the kerb.** This section has described *"a step at the base of the whole unit, sitting on the kerb"* since it was written, and the code put it *in* the kerb, and the difference is 2 cm and a preposition. Its base is now the kerb top, which is also the surface every §3.7 prop now stands on — one height, stated once, read by both.
 
-**States: 11 closed, 3 ajar. There is no `open`.** Ajar is the shutter down to 0.62 with light under it, which is the shape a half-shut alley shop actually makes, and it gets a **spill plane** recessed in the aperture. Eleven of fourteen shut, and nobody in any of them — §1 says nobody else is here, and the count is what keeps that true.
+**Superseded by §3.8: 12 closed, 0 ajar, 2 open.** ~~States: 11 closed, 3 ajar. There is no `open`.~~ Ajar is the shutter down to 0.62 with light under it, which is the shape a half-shut alley shop actually makes, and it gets a **spill plane** recessed in the aperture. Eleven of fourteen shut, and nobody in any of them — §1 says nobody else is here, and the count is what keeps that true.
 
 **It was 9 / 3 / 2, and the two open units were a mistake this section made twice.** The first version left 2.30 m of clearance, which is `⌊0.15 ÷ 0.09⌋` = **one slat** — a 2.55 × 2.30 flat panel of `void` with a `sodium` band at its foot, standing next to neighbours carrying twenty-seven slats each. Raising the curtain to ten slats made it a smaller hole.
 
@@ -468,7 +468,7 @@ The whole assembly — panel, both jambs, lintel — now ends flush on the pier'
 | Normal canvas | **384²** / **192²**, Sobel of the same field | below |
 | Applied to | §3.1's facade boxes and kerbs, §3.4's plinth · pier · fascia · awning, §3.3's piers and spandrels, **§3.7's crates and bin drums** | the large flat surfaces, and the two prop classes that read as material rather than as silhouette |
 | Repeat | `concrete` **3 × 3**, `facade` **2 × 2**, awning fabric **4 × 4**, **`crate` 1 × 1**, **`metal` 2 × 2** | below — UV space, not world space |
-| `normalScale` | `concrete` **0.60**, `facade` **0.45**, awning **0.35**, **crate 0.50**, **metal 0.35** | free |
+| `normalScale` | `concrete` **0.30**, `facade` **0.18** (were 0.60 / 0.45 — §16.19), awning **0.35**, **crate 0.50**, **metal 0.35** | free |
 | Cost | **0** draw calls, **+1.56 MB** desktop / **+0.39 MB** mobile | §15 |
 
 **The two new classes cost nothing, and the reason is worth stating once.** A per-class `repeat` needs its own `Texture`, but a cloned `Texture` shares its `Source` — one GPU upload, many samplers. So the fifth and sixth classes are two more clones of a canvas that is already resident, and §15's figure moves by zero. A crate at repeat 1 gets one grain tile across its 0.52 m face, which is the scale a cardboard box is; a bin drum at 2 gets the finer speckle of galvanised sheet.
@@ -852,6 +852,81 @@ The rest of the §3.2 inventory that stands on the ground: **4 dead vending mach
 
 ---
 
+### 3.8 The two open shops — a 24h store and a restaurant
+
+**Directed, and it reverses §3.4's *there is no `open`*.** §3.4 retired the state because an open shutter shows a shop and this world had no interiors. It has two now, so the state is back for exactly two units, and the three `ajar` units are closed: **12 closed, 0 ajar, 2 open.** The `ajar` code path stays for the day one reopens.
+
+| Value | | From |
+|---|---|---|
+| Store | east unit **9** (6.20 wide, mid-alley), fascia sign reading §11.4 index **4**, `24H` | the widest east unit with no awning |
+| Restaurant | west unit **4** (6.20 wide) — the unit already carrying §11.4's `おでん` on its lit sign box, which the noren repeats | no new string was needed |
+| Room | the unit's own aperture wide, `y ∈ [0.22, 2.55]`, **2.80** deep behind the wall face | free |
+| Shutter | wound fully onto its drum — §3.4's radius formula returns **0.23** | derived |
+| Wall | the side wall is solid above 4.00 and, below it, everywhere except behind an open aperture | what lets a room exist |
+| Store sign | unit width less 0.40, **0.62** high, centred `y = 3.02`, on the fascia | free |
+| Noren | **0.20** drop — short, because an eye riding the kerb at 1.80 has to pass under its hem | derived from §12.1 |
+| Pendants | 3, at **1.36** above the shop floor | below the noren's hem |
+| Glass | §8's glass row, opacity 0.22 | §8 |
+| Spill pools | painted, opacity **0.10**, reaching **2.60** onto the road | §3.6's road-glow trick |
+| Store doors | **1.10** wide, standing open between the two middle mullions; glass either side | free |
+
+**No dynamic light is spent.** §7's cap is full, so the rooms are *painted light*, the way §3.6's far street is: unlit vertex-coloured surfaces drawn at a fraction of their §4 token, and three new rungs on §8.1.
+
+| Rung | Value | |
+|---|---|---|
+| Shop sign | **0.85** | = the storefront sign box: under the knee like the other fourteen. A dark panel with lit bands and type, not a white slab |
+| Shop lamp (strip lights, pendants) | **1.01** | = the station plate: on the edge of the knee |
+| Shop interior faces | **0.16** | a few times the wall outside, far under the knee |
+
+Interior levels (fraction or gain of the token): floor 0.07, wall 0.20, ceiling 0.14, fixtures 0.16, warm wall 0.07, frames 0.8, steel 0.9, pots 1.3, timber floor 0.55, timber ceiling 0.7, timber 1.0, timber tops 1.7. The store's surfaces are `rain`, not `signWhite`. **Chosen by looking, and the first values to move.**
+
+**They were four to five times higher for one pass and read as two lit boxes pasted on the alley.** A painted surface is not attenuated by §7's darkness the way a lit one is, so a level that sounds dim (0.6 of a token) is thirty times the wall beside it. The rooms are set against the *measured* alley — walls around 0.01 linear — not against how bright a shop is.
+
+**The store is cool and the restaurant is warm, and §17's third line is strained by the second.** A convenience store is fluorescent — `signWhite`, no warm token — so it sits outside *three things are lit warmer than everything else*. The restaurant is `vendGlow` and `sodium` and is a fourth warm thing you cannot touch. Accepted because it was asked for; its noren is indigo (`neonBlue`, darkened) rather than `lantern` to keep the warm area down.
+
+**Everything in the rooms is geometry; the only painted faces left are the store's sign and the restaurant's noren.** The first build put shelf stock, the chiller wall, the bottle shelf and the menu on flat textured quads, which held from the street and read as wallpaper the moment the rooms became enterable. They are modelled now: gondolas with a spine, four shelves a side and individual packets and cans; a 0.45 m-deep run of five glazed chiller bays with five shelves of bottles each; a counter-back rack, a chest freezer and baskets; and in the restaurant two shelves of bottles, an oden pan, a fridge, timber menu tags, chopstick pots and sauce bottles. Stock is drawn at **0.30** of its §4 token. All of it bakes into the one painted mesh, so it costs triangles and **no draw call**; the menu tags carry no strings any more.
+
+**The rooms are lit by a bake, and that is what stopped them reading as flat cut-outs.** Unlit vertex colour at one level per surface has no falloff and no shadow, so every wall was a single value. `lib/bake.ts` now runs once at mount: each vertex's painted colour is multiplied by an ambient term plus, for every lamp in its room, a wrapped-Lambert term (wrap **0.35**), a soft falloff `1 ÷ (1 + (d ÷ radius)²)`, and **0.30** of the lamp where a fixture's box stands between them. Floors, walls and ceilings are diced at **0.22 m** so pools and shadows have vertices to land on. It is still not a dynamic light — §7's cap is untouched and nothing runs per frame.
+
+| Lamp | Token | Power | Radius |
+|---|---|---|---|
+| Store ambient | `rain` | 0.22 | — |
+| Store ceiling strip (3 strips × 3 points) | `signWhite` | 0.80 | 2.1 |
+| Chiller bay (2 per bay) | `neonCyan` | 1.10 | 0.75 |
+| Restaurant ambient | `sodiumDeep` | 0.16 | — |
+| Restaurant pendant (3) | `vendGlow` | 1.90 | 1.5 |
+| Kitchen strip under the hood | `signWhite` | 1.00 | 1.3 |
+| The alley, through each doorway | `neonMagenta` | 0.50 / 0.45 | 2.4 |
+
+The last row is what ties the rooms to the street: the first metre inside each door takes the alley's own magenta.
+
+**The fittings were rebuilt with it.** The store gains framed ceiling troffers, end caps and hung signs on the gondolas, a counter with a till, card reader and warm case, a chest freezer, a magazine rack under the window, a door mat and skirting; chiller bottles are two rows deep on desktop and one on mobile. The restaurant gains ceiling beams, a capped wainscot, a foot rail and place settings at the counter, pendants with shades and bulbs, a kitchen bench with pot, kettle and rice cooker under a ducted hood with ladles, shelves of stacked bowls, a clock, a four-legged table, crates of empties and an umbrella stand.
+
+**Everything in the store is labelled.** Every packet, can and bottle carries a printed label on the face a customer sees; every shelf edge carries price tickets; the two aisle signs, the five chiller headers, the till, the warm case and the freezer are named; the magazines have covers and two posters hang over the freezer. The labels are quads sampling **one atlas** (16 product designs, 4 prices, 4 covers and the signs), merged into **one mesh** and passed through the same bake as the stock they are stuck to, so a label in shadow is in shadow. A label stands **0.005** off its carrier. Cost: **+1 draw call**, one 1024-wide atlas, roughly 800 quads on desktop.
+
+**This adds a second list of permitted strings, for the store's interior only** — §11.4's rule (*never project-related*) holds for it:
+
+| | Strings |
+|---|---|
+| Products | `お茶` `水` `コーヒー` `牛乳` `パン` `おにぎり` `弁当` `菓子` `チョコ` `ガム` `カレー` `みそ` `ソース` `せんべい` `ジュース` `ラーメン` |
+| Bottles (chillers) take only | `お茶` `水` `コーヒー` `牛乳` `ジュース` |
+| Aisle signs | `菓子` `日用品` |
+| Chiller headers | `お茶` `水` `コーヒー` `ジュース` `ビール` |
+| Till · warm case · freezer | `レジ` · `肉まん` · `アイス` |
+| Magazines | `雑誌` `マンガ` `週刊` `旅` |
+| Posters | `新発売` `セール` |
+| Price tickets | `¥98` `¥120` `¥158` `¥248` |
+
+**Both rooms can be walked into, and §3's clamp became a union of rectangles to allow it.** The alley rectangle is unchanged; each shop adds zones that overlap it — the store a 0.46 m corridor through its open doors plus the room, the restaurant its whole open front — kept **0.35** off the room's walls. §12.4 boxes go on the gondolas, both counters, the stools, the bench and the table. §17's *nothing lets you out of it* still holds: a room is a dead end. **Nothing in either room is content, clickable or raycast against (§2.4).**
+
+**The eye now rides the ground**: +0.12 on the pavement, +0.22 on a shop floor, eased. §3 said the kerb step *is never felt* because the eye was fixed; inside a room at a fixed 1.68 the visitor would stand 22 cm into the floor.
+
+**The rooms flickered, and it was coplanar faces again (§3.3, §3.7).** The room's ceiling shared a plane with the wall header above the hole, its side walls with the hole's cut faces, and every painted face stood 3–6 mm off its carrier. The shell now lines the hole from a centimetre inside it and painted faces stand **0.02** proud. Two scooters moved off the two shopfronts. Cost: **+5 draw calls**, one 1024-wide atlas. Not re-measured against §15.
+
+**§3.4's wall grain is now mapped in world metres.** The instanced-box UV stretch §3.4 answered by *choosing noise that survives it* is removed instead: the facade and kerb materials project their maps from world position along each face's dominant axis (a vertex-shader patch, no extra draw call), at **3.20 m** per tile on walls and **1.60 m** on concrete. With the stretch gone the wall texture can have direction, so it is no longer speckle: broad weathering, panel joints at two courses per tile, and stains running down from each joint. One more 384² / 192² albedo + normal pair.
+
+---
+
 ## 4. Palette
 
 Every colour in the world comes from this table. Nothing else.
@@ -1110,7 +1185,7 @@ There is no sun at 3am. **No `directionalLight` anywhere. Shadow maps are off** 
 |---|---|---|---|---|---|
 | 1 | `hemisphereLight` | sky `#121A2B` / ground `#060A10` | **0.70** | — | — |
 | 2 | `rectAreaLight` **= §2.1's screen** | `signWhite` | **1.2** cd/m², **desktop only** — was 70 | §2.1's screen centre, facing the alley | — (see below) |
-| 3 | `pointLight` | `neonMagenta` | **95** — was 264 | **0.90 m** clear of §2.1's title lightbox | 9.0 / 2 |
+| 3 | `pointLight` | `neonMagenta` | **40** — was 95, was 264 | **0.90 m** clear of §2.1's title lightbox | 9.0 / 2 |
 | 4 | `rectAreaLight` **2.0 × 0.9 = §2.2's lit canopy** | `vendGlow` | **28** — was 5.0 | `(+3.62, 1.94, 19.0)` facing **`-Y`** | — |
 | 5 | `pointLight` | `signWhite` | **18** — was 2.5 | `(-3.00, 1.55, 14.0)`, 1.20 m off §2.3's bank face | 6.0 / 1.45 |
 | 6 | `pointLight` | *its sign's* | **150** | §3.5 sign **1** | **18.0 / 1.45** |
@@ -1277,14 +1352,14 @@ Bloom's threshold is `0.90`. This ladder is what sits either side of it.
 | **Mailbox label** (§2.3) | **1.89** | — | yes |
 | **Vehicle tail lamp** (§3.6) | **2.33** | 1.55 | yes — soft |
 | Paper lanterns | **2.77** | 1.75 | yes |
-| Aperture surround strip (§2.1) | **2.00** | 1.40 | yes |
+| Aperture surround strip (§2.1) | **0.85** | 2.00 | no — see §16.19 |
 | Overhead banner (§3.5) | **1.78** | 1.30 | yes |
 | **Taxi roof sign** (§3.6) | **1.56** | 1.20 | yes |
 | **Project title sign** (§2.1) | **1.23** | 1.05 | yes — split off `lightboxSign` |
 | **Open-shutter spill** (§3.4) | **1.34** | 1.10 | yes — soft |
 | Station `終電` plate | **1.01** | 0.95 | edge, deliberately |
 | **Storefront sign box** (§3.4) | **0.85** | — | no — fourteen of them |
-| **Project screenshot** (§2.1) | **0.45** (tinted `#8792A6`) | 0.78 | **no — and never** |
+| **Project screenshot** (§2.1) | **0.88** (tinted `uiInk` `#E8ECF4`) | 0.78 | **no — and never** |
 | **Board face** (§2.1) | **0.70** | — | no |
 | Facade window bays (§3.3) | **0.55** | — | no — lit rooms, not signs |
 
@@ -2251,6 +2326,44 @@ All of §3.7. Free choices: every dimension in its table except the vending mach
 **A baseline nudge that was right for one script was silently wrong for the other.** The painter dropped every row by 6% of the cap because canvas centres the em box, which an all-caps Latin row does not fill downward. Katakana does. The nudge survived the script change because it was written as a property of *the sign*, and it is now a property of *the face* — the same field §3.4's lightbox rows have carried since the storefront build. **Any constant justified by a comment about capitals belongs next to the thing that chooses the font.**
 
 **A hardcoded offset only looks like a constant while nothing above it can move.** §12.7's *Return to freeroam* pill was absolute at `3.75rem` — the bar's height plus its safe-area inset, correct and invisible for two sections. The mobile wordmark row put a line above the bar and that number became wrong on every phone at once. It is a flow row now.
+
+### 16.19 Settled during the legibility pass
+
+**The board's frame was brighter than the work in it, and the fix was to swap which of the two is lit.** §16.16 took the screenshot from 0.78 to 0.45 because two white projects lit the bend; what that left was a dim image inside a surround strip at 2.00 with a 95 cd magenta light under it — *the screen is too bright and the project cannot be seen*, reported as one complaint and correctly. The screenshot goes back to **0.78** with its `#A6B2C6` tint (peak ≈ 0.34 linear, still far under the 0.90 knee), the surround strip drops under the knee to **0.85**, and light 3 goes **95 → 40**. The rule that the image never blooms is unchanged; the things around it no longer bloom either.
+
+**The wall texture was halved.** Weathering 0.26 → 0.13, stains × 0.4, joint lines 0.30 → 0.14, and `normalScale` 0.45 → 0.18 on walls and 0.60 → 0.30 on concrete. At the first values the texture was the loudest thing on the wall; a wall is what things stand in front of.
+
+**The cart flickered for §3.3's reason again, and was rebuilt rather than nudged.** Its fascia shared a plane with the canopy's front face, its menu tags stood 2 mm off the back board, the sign band 6 mm off the bar, and the lit panels sat *inside* the rafters. Everything that sits on something else now stands a centimetre or two proud of it, the rafters run between the lamps, and the lit faces stand 0.02 off their housings. With it: battens on the bar, a lipped worktop, a lightbox for the sign band, timber wheels with hubs, chassis rails, push shafts (and a collision box that covers them), a gas bottle and bucket underneath, knee braces, lamp housings, a tin cap, fascia on three sides, a shelf of bottles and stacked bowls, and a stock pot with its ladle. All of it reuses tokens the cart already had, so §3.7's merge carries it at no draw call.
+
+**A label on a cylinder wraps round it.** Cans and bottles in the store — and now the restaurant's bottles — carry a band of **1.2π** (216°) centred on the customer, 3 mm off the surface, so the word faces out and the seam is behind. Boxes keep flat labels. The restaurant gains one more short list: bottles `酒` `ビール` `焼酎` `梅酒`, and its five menu tags are lettered with §11.4's own `おでん` `定食` `ラーメン` `酒` `焼鳥`.
+
+### 16.20 Settled during the mounting pass
+
+**The lanterns were hung off the wall plane, and the wall is not where the wall is.** §3.7 put each shade 0.34 from the facade; §3.4's fascia stands 0.35 proud from 2.55 up, so every lantern over a storefront was *inside* the fascia, and one shared a `z` with a standpipe. A lantern is now bolted to what is actually there — `base` is 0.35 on a unit and 0 in a joint — on a plate, an arm, a stay and a hook, with caps top and bottom; and its `z` clears **every** sign box (an unlit one is still a box 0.49 proud), every §3.5 sign and every standpipe. Same lesson as §3.4's doorway: a thing is placed against what it occupies, not against the plane behind it.
+
+**The screenshot is at 0.88 and nearly untinted, which is as far as this rung can go.** 0.45 → 0.78 → 0.88, tint `#8792A6` → `#A6B2C6` → `uiInk`. The knee at 0.90 is still the ceiling and is the only thing left holding it; a white project now peaks around 0.73 linear. §16.16's worry — a white page lighting the bend — does not return, because an emissive surface lights nothing and the things that *were* lighting the bend (the strip, light 3) came down in §16.19.
+
+**§2.1.1's standoff splits by orientation: 7.00 portrait, 4.80 landscape.** 7.00 was derived against a portrait frame, where the board fills the width. On a landscape frame the same pose left it at a third of the screen. Orientation is read live (§15.1), so rotating a phone re-frames on the next press. The pose stays inside `BOUNDS` at `(−2.32, 18.09)`.
+
+**The cart was standing in the doorway behind it.** 1.00 deep with its back at 0.20 from the wall, it reached through §3.4's piers (0.35 proud) and a doorway frame (0.45), and its push shaft ran through a jamb. It is **0.84 deep, 0.48 off the wall** — back at 0.03 clear of the frames, front on the kerb edge at 3.18. §3's kerb derivation named the cart as the deepest wall prop at 1.00; the vending machines' 1.02 now sets it and the width does not move. It is also **painted red** (`lantern` carcass and canopy, timber trim), with spoked wheels, a foot rail, drawers, a permit plate, steamers, a kettle, a ladle rail, a stovepipe, a rolled tarp, and a small lantern hung off its north end.
+
+**The vending machines are modelled.** The painted rack is gone: each is a cabinet with a recessed display of 24 sample cans on four shelves over selection buttons, a control column (coin slot, keys, note acceptor, coin return, lock), a delivery bin with its flap, a blank header placard, kick plate, feet and a top vent. Still unlit, still no emissive term; **−1 draw call** (the rack material) and no texture.
+
+**The mailbox bank reads as letterboxes.** Each box has a rain cap, a hinged door with hinges, a hooded slot with a lock beside it, a card holder for the channel's name, and a signal flag on an arm; two have post sticking out. Over the bank a pitched canopy carries the strip lamp that lights the names; under it a parcel shelf. The box under the pointer lifts to `scooterPaint`. Boxes remain the only raycast target, so `instanceId` is still the channel. +1 draw call.
+
+**The restaurant's fridge is gone**; the bottle shelves run on into the corner.
+
+### 16.21 Settled during the seating pass
+
+**Every wall prop was standing inside the shopfront behind it, and §16.20 had already named the fault.** §3.7 puts a wall prop's back face at `|x| = 4.30` — the wall less a 0.20 plinth. But §3.4's frame stands 0.35 proud, its doorway frames 0.45, and the plinth was built 0.20 beyond *that*, out to 3.95: so crates, bins, scooters and vending machines all had their backs buried in a pier and their feet in a 10 cm plinth, which read as *clipping into the sidewalk*. A prop's back is now at **`4.5 − 0.45 − 0.03` = 4.02**, derived from the deepest thing on the wall rather than from the wall, and the plinth is a **0.04** lip in front of its frame instead of a 0.20 shelf. A vending machine's front lands on the kerb edge at 3.20 exactly. It is §16.20's sentence again — *placed against what it occupies, not the plane behind it* — and it should have been generalised then.
+
+**The rubbish points are remodelled.** A tapered galvanised bin with a plain side — no hoops, ribs or rings round it — a skirted and domed lid with a strap handle, and side handles; a square plastic bin with its lid shut; four tied bags; flattened cardboard against the wall. **The fourteen vertical ribs came off** — at this size they read as stripes drawn on the bin, not as pressed steel. **The bags were squashed spheres and read as balls**; each is now a sphere reshaped into a slumped pear — flat where it rests, widest a third of the way up, lumpy and creased, drawn in to a gathered neck — resting exactly on the kerb top. All in the two existing material buckets: **no draw call**.
+
+**The far street's boards are LED signs, not colour swatches.** §3.6's twenty flat rectangles are now dot matrices at **0.14 m** pitch, each running one of **five** patterns assigned by index — falling columns of glyph-like blocks, a sideways ticker, rising chevrons, a column meter, a border chase round a breathing block. Same count, same sizes, same §4 ratio, same 1.25 gain, same single instanced draw call; unlit dots sit at **0.05**. Where the dots fall under two pixels the matrix resolves to its average, so it does not shimmer at forty metres. **Nothing on them is a string**, so §11.4 is untouched. §13: under reduced motion they hold one frame.
+
+**The vending machines' sample cans carry wrapped labels** — §16.19's band, from the store's drink words, on a lit (not emissive) material: the machines stay dead. +1 draw call, one small atlas.
+
+**The cart's battens run the full height of the bar**, worktop to foot, over a skirt rail; and the banded stack beside the stock pot — bamboo steamers, which read as *a pot with lines wrapped round it* — is a plain lidded steel pot.
 
 ## 17. Definition of done, for this world specifically
 
